@@ -8,16 +8,16 @@ class TimePicker extends Component {
   constructor(props) {
     super(props);
     const { selectedHour, selectedMinute } = props;
-    this.state = { selectedHour, selectedMinute };
+    this.state = { selectedHour, selectedMinute, selectedMinuteDisplay: selectedMinute };
   }
 
   componentWillReceiveProps(nextProps) {
     const { selectedHour, selectedMinute } = nextProps;
     if (
       selectedHour !== this.state.selectedHour ||
-      selectedMinute !== this.state.selectedMinute
+      parseInt(selectedMinute) !== parseInt(this.state.selectedMinute)
     ) {
-      this.setState({ selectedHour, selectedMinute });
+      this.setState({ selectedHour, selectedMinute: parseInt(selectedMinute) , selectedMinuteDisplay: selectedMinute });
     }
   }
 
@@ -39,6 +39,18 @@ class TimePicker extends Component {
     const items = [];
     const { maxMinute, minuteInterval, minuteUnit } = this.props;
     const interval = maxMinute / minuteInterval;
+    for (let i = 0; i <= maxMinute; i++) {
+      const value = i * minuteInterval;
+      const new_value_label = value < 10  ? `0${value}` : `${value}`;
+      const item = (
+        <Picker.Item
+          key={-value}
+          value={value !== 0 ? `${-value}` : `120`}
+          label={new_value_label + minuteUnit}
+        />
+      );
+      items.push(item);
+    }
     for (let i = 0; i <= interval; i++) {
       const value = i * minuteInterval;
       const new_value = value < 10 ? `0${value}` : `${value}`;
@@ -51,11 +63,25 @@ class TimePicker extends Component {
       );
       items.push(item);
     }
+    for (let i = 0; i <= interval; i++) {
+      const value = i * minuteInterval;
+      const new_value_label = value < 10  ? `0${value}` : `${value}`;
+      const item = (
+        <Picker.Item
+          key={value + 60}
+          value={`${value + 60}`}
+          label={new_value_label + minuteUnit}
+        />
+      );
+      items.push(item);
+    }
     return items;
   };
 
-  onValueChange = (selectedHour, selectedMinute) => {
-    this.setState({ selectedHour, selectedMinute });
+  onValueChange = (selectedHour, selectedMinute, selectedMinuteDisplay) => {
+    var newMin = typeof selectedMinute === "string" ? Math.abs(parseInt(selectedMinute) % 60) : Math.abs(selectedMinute % 60);
+    newMin = newMin < 10 ? `0${newMin}` : `${newMin}`;
+    this.setState({ selectedHour, selectedMinute, selectedMinuteDisplay: newMin});
   };
 
   onCancel = () => {
@@ -67,8 +93,8 @@ class TimePicker extends Component {
 
   onConfirm = () => {
     if (typeof this.props.onConfirm === "function") {
-      const { selectedHour, selectedMinute } = this.state;
-      this.props.onConfirm(selectedHour, selectedMinute);
+      const { selectedHour, selectedMinute, selectedMinuteDisplay } = this.state;
+      this.props.onConfirm(selectedHour, selectedMinuteDisplay);
     }
   };
 
@@ -97,7 +123,9 @@ class TimePicker extends Component {
   };
 
   renderBody = () => {
-    const { selectedHour, selectedMinute } = this.state;
+    var { selectedHour, selectedMinute, selectedMinuteDisplay } = this.state;
+    selectedMinute = parseInt(selectedMinute)
+    selectedMinute = isNaN(selectedMinute) ? "00" : (selectedMinute < 10 && selectedMinute > -1) ? "0" + selectedMinute.toString() : selectedMinute.toString();
     return (
       <View style={styles.body}>
         <Picker
@@ -105,7 +133,7 @@ class TimePicker extends Component {
           style={styles.picker}
           itemStyle={this.props.itemStyle}
           onValueChange={itemValue =>
-            this.onValueChange(itemValue, selectedMinute)
+            this.onValueChange(itemValue, selectedMinute, selectedMinuteDisplay)
           }
         >
           {this.getHourItems()}
@@ -116,7 +144,7 @@ class TimePicker extends Component {
           style={styles.picker}
           itemStyle={this.props.itemStyle}
           onValueChange={itemValue =>
-            this.onValueChange(selectedHour, itemValue)
+            this.onValueChange(selectedHour, itemValue, itemValue)
           }
         >
           {this.getMinuteItems()}
