@@ -30,7 +30,7 @@
   },
   "bundleDependencies": false,
   "dependencies": {
-    "@wegory/react-native-raw-bottom-sheet": "^1.0.0"
+    "react-native-raw-bottom-sheet": "https://github.com/wegory/react-native-raw-bottom-sheet/tarball/master"
   },
   "deprecated": false,
   "description": "React Native 24 hours format TimePicker for iOS",
