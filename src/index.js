@@ -107,16 +107,16 @@ class TimePicker extends Component {
   };
 
   renderHeader = () => {
-    const { textCancel, textConfirm } = this.props;
+    const { timeType, textConfirm, timeTypeFontStyle, doneFontStyle, headerStyle } = this.props;
     return (
-      <View style={styles.header}>
-        <TouchableOpacity onPress={this.onCancel} style={styles.buttonAction}>
-          <Text style={[styles.buttonText, styles.buttonTextCancel]}>
-            {textCancel}
+      <View style={headerStyle}>
+        <View style={styles.buttonAction}>
+          <Text style={timeTypeFontStyle}>
+            {timeType}
           </Text>
-        </TouchableOpacity>
+        </View >
         <TouchableOpacity onPress={this.onConfirm} style={styles.buttonAction}>
-          <Text style={styles.buttonText}>{textConfirm}</Text>
+          <Text style={doneFontStyle}>{textConfirm}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -127,7 +127,7 @@ class TimePicker extends Component {
     selectedMinute = parseInt(selectedMinute)
     selectedMinute = isNaN(selectedMinute) ? "00" : (selectedMinute < 10 && selectedMinute > -1) ? "0" + selectedMinute.toString() : selectedMinute.toString();
     return (
-      <View style={styles.body}>
+      <View style={this.props.bodyStyle}>
         <Picker
           selectedValue={selectedHour}
           style={styles.picker}
@@ -138,7 +138,7 @@ class TimePicker extends Component {
         >
           {this.getHourItems()}
         </Picker>
-        <Text style={styles.separator}>:</Text>
+        <Text style={[this.props.doneFontStyle, {alignSelf: "center"}]}>:</Text>
         <Picker
           selectedValue={selectedMinute}
           style={styles.picker}
@@ -177,7 +177,11 @@ TimePicker.propTypes = {
   selectedHour: PropTypes.string,
   selectedMinute: PropTypes.string,
   itemStyle: PropTypes.object,
-  textCancel: PropTypes.string,
+  timeTypeFontStyle: PropTypes.object,
+  headerStyle: PropTypes.object,
+  doneFontStyle: PropTypes.object,
+  bodyStyle: PropTypes.object,
+  timeType: PropTypes.string,
   textConfirm: PropTypes.string,
   onCancel: PropTypes.func,
   onConfirm: PropTypes.func
@@ -193,7 +197,11 @@ TimePicker.defaultProps = {
   selectedHour: "0",
   selectedMinute: "00",
   itemStyle: {},
-  textCancel: "Cancel",
+  bodyStyle: {},
+  headerStyle: {},
+  timeTypeFontStyle:{},
+  doneFontStyle:{},
+  timeType: "Combined",
   textConfirm: "Done"
 };
 
