@@ -11,15 +11,15 @@ class TimePicker extends Component {
     this.state = { selectedHour, selectedMinute, selectedMinuteDisplay: selectedMinute };
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { selectedHour, selectedMinute } = nextProps;
-    if (
-      selectedHour !== this.state.selectedHour ||
-      parseInt(selectedMinute) !== parseInt(this.state.selectedMinute)
-    ) {
-      this.setState({ selectedHour, selectedMinute: parseInt(selectedMinute) , selectedMinuteDisplay: selectedMinute });
-    }
-  }
+//   componentWillReceiveProps(nextProps) {
+//     const { selectedHour, selectedMinute } = nextProps;
+//     if (
+//       selectedHour !== this.state.selectedHour ||
+//       parseInt(selectedMinute) !== parseInt(this.state.selectedMinute)
+//     ) {
+//       this.setState({ selectedHour, selectedMinute: parseInt(selectedMinute) , selectedMinuteDisplay: selectedMinute });
+//     }
+//   }
 
   getHourItems = () => {
     const items = [];
