@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { View, TouchableOpacity, Text, Picker } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
+import { PickerIOS } from "@react-native-picker/picker";
 import RBSheet from "react-native-raw-bottom-sheet";
 import styles from "./styles";
 
@@ -28,7 +29,7 @@ class TimePicker extends Component {
     for (let i = 0; i <= interval; i++) {
       const value = `${i * hourInterval}`;
       const item = (
-        <Picker.Item key={value} value={value} label={value + hourUnit} />
+        <PickerIOS.Item key={value} value={value} label={value + hourUnit} />
       );
       items.push(item);
     }
@@ -43,7 +44,7 @@ class TimePicker extends Component {
       const value = i * minuteInterval;
       const new_value_label = value < 10  ? `0${value}` : `${value}`;
       const item = (
-        <Picker.Item
+        <PickerIOS.Item
           key={-value}
           value={value !== 0 ? `${-value}` : `120`}
           label={new_value_label + minuteUnit}
@@ -55,7 +56,7 @@ class TimePicker extends Component {
       const value = i * minuteInterval;
       const new_value = value < 10 ? `0${value}` : `${value}`;
       const item = (
-        <Picker.Item
+        <PickerIOS.Item
           key={value}
           value={new_value}
           label={new_value + minuteUnit}
@@ -67,7 +68,7 @@ class TimePicker extends Component {
       const value = i * minuteInterval;
       const new_value_label = value < 10  ? `0${value}` : `${value}`;
       const item = (
-        <Picker.Item
+        <PickerIOS.Item
           key={value + 60}
           value={`${value + 60}`}
           label={new_value_label + minuteUnit}
@@ -128,7 +129,7 @@ class TimePicker extends Component {
     selectedMinute = isNaN(selectedMinute) ? "00" : (selectedMinute < 10 && selectedMinute > -1) ? "0" + selectedMinute.toString() : selectedMinute.toString();
     return (
       <View style={this.props.bodyStyle}>
-        <Picker
+        <PickerIOS
           selectedValue={selectedHour}
           style={styles.picker}
           itemStyle={this.props.itemStyle}
@@ -137,9 +138,9 @@ class TimePicker extends Component {
           }
         >
           {this.getHourItems()}
-        </Picker>
+        </PickerIOS>
         <Text style={[this.props.doneFontStyle, {alignSelf: "center"}]}>:</Text>
-        <Picker
+        <PickerIOS
           selectedValue={selectedMinute}
           style={styles.picker}
           itemStyle={this.props.itemStyle}
@@ -148,7 +149,7 @@ class TimePicker extends Component {
           }
         >
           {this.getMinuteItems()}
-        </Picker>
+        </PickerIOS>
       </View>
     );
   };
